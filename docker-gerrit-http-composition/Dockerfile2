@@ -1,0 +1,8 @@
+FROM gerritcodereview/gerrit
+MAINTAINER Samok
+
+# Allow additional port for incoming traffic
+EXPOSE 81
+
+# Copy gerrit.config
+COPY my-gerrit.config /var/gerrit/etc/gerrit.config

@@ -1,0 +1,46 @@
+version : '3'
+
+services:
+  gerrit:
+    user: "${UID}:${GID}" 
+    build:
+      context: .
+      dockerfile: Dockerfile2
+    ports:
+      - "29418:29418"
+      - "8080:8080"
+      - "81:81"
+    environment:
+      - CANONICAL_WEB_URL=http://chromebox.samok.fr:81/gerrit/
+    depends_on:
+    #  - postgres
+      - apache
+    networks:
+      - pic
+    volumes:
+      - /home/samok/dockerWorkspace/projects/gerrit_volume/etc:/var/gerrit/etc
+      - /home/samok/dockerWorkspace/projects/gerrit_volume/git:/var/gerrit/git
+      - /home/samok/dockerWorkspace/projects/gerrit_volume/index:/var/gerrit/index
+      - /home/samok/dockerWorkspace/projects/gerrit_volume/cache:/var/gerrit/cache
+        #entrypoint: java -jar /var/gerrit/bin/gerrit.war init -d /var/gerrit
+  apache:
+    build: ./apache
+    ports:
+      - "8081:8081"
+  postgres:
+    image: postgres:9.6
+    environment:
+      - POSTGRES_USER=gerrit
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=reviewdb
+    networks:
+      - pic
+    volumes:
+      - /home/samok/dockerWorkspace/projects/gerrit_volume/postgres:/var/lib/postgresql/data
+        #volumes:
+        #git-volume:
+        #db-volume:
+        #index-volume:
+        #cache-volume:
+networks:
+  pic:

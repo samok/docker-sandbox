@@ -1,0 +1,1 @@
+docker run -d -p 80:80 -p 443:443 -v /home/samok/dockerWorkspace/projects/proxy-nginx/htpasswd:/etc/nginx/htpasswd -v /home/samok/dockerWorkspace/projects/proxy-nginx/certs:/etc/nginx/certs -v /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy
